@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title>Back to the Future with TypeScript</title>
+
+<meta name="description" content="Back to the frontend future">
+<meta name="author" content="Aleš Najmann">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+<link rel="stylesheet" href="bower_components/reveal.js/css/reveal.css">
+<link rel="stylesheet" href="n.css" id="theme">
+
+<!-- Code syntax highlighting -->
+<link rel="stylesheet" href="bower_components/reveal.js/lib/css/zenburn.css">
+
+<!-- Printing and PDF exports -->
+<script>
+var link = document.createElement('link');
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'bower_components/reveal.js/css/print/pdf.css' : 'bower_components/reveal.js/css/print/paper.css';
+document.getElementsByTagName('head')[0].appendChild(link);
+</script>
+
+<!--[if lt IE 9]>
+<script src="bower_components/reveal.js/lib/js/html5shiv.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+<div class="slides">
+<section>
+<h1>Back to the future</h1>
+<h2>with ES2015 and TypeScript</h2>
+<p>
+Brought to you by <a href="mailto:ales.najmann@jumpshot.com?subject=Back+to+the+Future">Aleš Najmann</a> @ <a href="http://www.jumpshot.com">Jumpshot</a>
+</p>
+</section>
+
+<section data-background="bttf-title-card.jpg">
+</section>
+
+<section data-background="news.jpg">
+<h2>Agenda</h2>
+<ol>
+<li>The rise of JavaScript</li>
+<li>JavaScript development challenges</li>
+<li>EcmaScript on the edge of 2015</li>
+<li>The rise of TypeScript</li>
+<li>Where is our profit? Q &amp; A</li>
+</ol>
+</section>
+
+<section>
+<h2>!! Warning !!</h2>
+<h3>There will be code</h3>
+</section>
+
+<section data-background="#f5da55" class="darker">
+<section>
+<h2>The rise of JavaScript</h2>
+<ul>
+<li>First browser war (>1995)</li>
+<li>EcmaScript Standardization: 97, 98, 99, , 09, 15</li>
+<li>Server-side JavaScript (2009)</li>
+</ul>
+
+<aside class="notes">
+<ul>
+<li>
+Netscape dominated market, but MSFT comes with IE 1.0,
+IE 2.0 for free as part of the Windows
+</li>
+<li>
+Netscape comes with JavaScript, named by another technology prophecy
+Java. MSFT followed with JScript. Other proprietary extensions (tags)
+were introduced. '96 market share parity. Netscape on decline.
+</li>
+<li>
+Netscape eventually lost market share and was pushed to
+published source code and open web initiative. After complete opensource
+Netscape source code become Mozilla and later Firefox.
+</li>
+</ul>
+</aside>
+</section>
+
+<section>
+<h2>Server-side JavaScript</h2>
+<h4>
+Node.js based on V8 (Chrome) JavaScript engine.
+</h4>
+<p>
+Modules exist but they are loaded synchronously and that makes them
+impossible to use in browser.
+</p>
+<p>
+...or need specialised bundler like browserify
+</p>
+</section>
+
+<section>
+<h2>Just a note...</h2>
+<p>
+<em>JavaScript</em> is a trademark of Oracle Corporation.
+</p>
+</section>
+</section>
+
+<section data-background="#f5da55" class="darker">
+<section>
+<h2><em>Traditional</em> Development challenges</h2>
+<h4>Absence of stronger structuring capabilities</h4>
+<ul>
+<li>No modules</li>
+<li>No classes</li>
+<li>...but Prototype chain to a rescue</li>
+<li>No static types</li>
+<li>Single-threaded execution model</li>
+<li>...still async</li>
+<li>DOM - terribilis est</li>
+<li>Browser differences</li>
+<li>and there is more...</li>
+</ul>
+</section>
+
+<section data-background="gbu.jpg">
+<!-- JavaScript: The Good Parts -->
+<!-- JavaScript: The Definitive Guide -->
+</section>
+</section>
+
+<section data-background="#f5da55" class="darker">
+<section>
+<h2>EcmaScript 2015 features</h2>
+<h4>(productivity boost)</h4>
+<ul>
+<li>Arrow functions</li>
+<li>Template strings</li>
+<li>Classes, Subclasses</li>
+<li>Destructuring</li>
+<li>Default + Rest + Spread</li>
+<li>Let + Const</li>
+<li>Iterators + For..Of</li>
+<li>Generators</li>
+<li>Modules</li>
+<li>Promises</li>
+<li>and there is more...</li>
+</ul>
+</section>
+
+<section>
+<h2><em>Fat</em> Arrow functions</h2>
+<pre><code class="hljs javascript" data-trim contenteditable>
+// Expression bodies
+var odds = evens.map(v => v + 1);
+var nums = evens.map((v, i) => v + i);
+var pairs = evens.map(v => ({even: v, odd: v + 1}));
+
+// Statement bodies
+nums.forEach(v => {
+  if (v % 5 === 0)
+    fives.push(v);
+  }
+);
+</code></pre>
+</section>
+
+<section>
+<h2><em>Fat</em> Arrow functions</h2>
+<pre><code class="hljs javascript" data-trim contenteditable>
+// Lexical this
+var bob = {
+  _name: "Bob",
+  _friends: ["Jane", "Frank"],
+  printFriends() {
+    this._friends.forEach(f =>
+    console.log(this._name + " knows " + f));
+  }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Template strings</h2>
+<pre><code class="hljs javascript" data-trim contenteditable>
+// Basic literal string creation
+`In JavaScript '\n' is a line-feed.`
+
+// Multiline strings
+`Before ES2015 this is
+not legal.`
+
+function twice(x: number): number {
+	return x * 2;
+}
+// String interpolation (or templates)
+var name = "Bob", time = "today";
+`Hello ${name}, how are you ${time}?`
+`Twice 3 is ${twice(3)}`
+</code></pre>
+</section>
+
+<section>
+<h2>Classes</h2>
+<pre><code class="hljs javascript" data-trim contenteditable>
+class Animal {
+  constructor(name) { this._name = name; }
+  myApiMethod() { return 'Oh hai!'; }
+  get name() { return this._name; }
+  static createLemming() { return new Animal('Lemming'); }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>SubClasses</h2>
+<pre><code class="hljs javascript" data-trim contenteditable>
+class MyElement extends HTMLElement {
+  constructor() { super(); } // super call is required
+  myApiMethod() { return 'Oh hai!'; }
+  toString() { return "MyElement"; }
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Let + Const</h2>
+<pre><code class="hljs javascript" data-trim contenteditable>
+// let is new var ;)
+let sayHi = 'Oh hai!';
+
+// const makes things final
+const king = {
+  name: 'John Snow',
+  title: 'The King in the North'
+};
+</code></pre>
+<p>
+<code>Let</code> is block scoped rather than function scoped like <code>var</code>.
+</p>
+</section>
+
+<section>
+<h2>Destructuring</h2>
+<pre><code class="hljs javascript" data-trim contenteditable>
+// completely statically checked
+let [hello, world] = ['hello', 'world'];
+
+const {name, title} = {
+  name: 'John Snow',
+  title: 'The King in the North'
+};
+
+let [a, b, c] = [10, 20]; // an error
+let [a, b] = [10, 20, 30]; // ok
+</code></pre>
+</section>
+
+<section>
+<h2>Default + Rest + Spread</h2>
+<pre><code class="hljs javascript" data-trim contenteditable>
+function adder(x, y=12) { // Default value: y is 12 if not passed
+  return x + y;
+}
+adder(3) == 15;
+function multiplyLen(x, ...y) { // Rest operator: y is an Array
+  return x * y.length;
+}
+multiplyLen(3, "hello", true) == 6
+function adder2(x, y, z) {
+  return x + y + z;
+}
+// Spread operator: Pass each elem of array as argument
+adder2(...[1,2,3]) == 6
+</code></pre>
+</section>
+
+<section>
+<h2>For...of</h2>
+<pre><code class="hljs javascript" data-trim contenteditable>
+let arr = ['a', 'b', 'c'];
+for (let elem of arr) {
+  console.log(elem);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Other features</h2>
+<ul>
+<li>Promises</li>
+<li>Math + Number + String + Array + Object APIs</li>
+<li>Unicode, Symbols, Proxies</li>
+<li>Tail calls, Reflect API</li>
+<li>...</li>
+</ul>
+</section>
+
+<section>
+<img src="past.jpg">
+</section>
+
+</section>
+
+<section data-background="#0074c1">
+
+<section>
+<h2>The rise of TypeScript</h2>
+<ul>
+<li>Microsoft initiative developed entirely on Github under APL 2.0</li>
+<li>Lead developer is Anders Hejlsberg, author of Turbo Pascal, Delphi and C#</li>
+<li>Originated from the perceived shortcomings of JavaScript for the development of large-scale applications</li>
+</ul>
+</section>
+
+<section>
+<h2>TypeScript</h2>
+<p>
+What's the deal? let's look at the conversation on irc server freenode.net channel #typescript
+</p>
+<pre><code data-trim>
+07:11 &lt;Ian_Corne&gt; can I use all ES6 syntax in typescript :)
+07:16 &lt;halcyon&gt; Ian_Corne: yes, you can
+07:16 &lt;Ian_Corne&gt; Ok, thanks, great!
+</code></pre>
+<p>
+TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.
+</p>
+</section>
+
+<section>
+<h2>Type System &amp; Interfaces</h2>
+<blockquote>
+One of TypeScript's core principles is that type-checking focuses on the shape that values have.
+This is sometimes called "duck typing" or "structural subtyping".
+In TypeScript, interfaces fill the role of naming these types, and are a powerful way of defining
+contracts within your code as well as contracts with code outside of your project.
+</blockquote>
+</section>
+
+<section>
+<h2>Ambient declarations</h2>
+<pre><code class="hljs typescript" data-trim contenteditable>
+// what if jQuery is present, but compiler doesn't know that
+declare module "jquery" {
+    export = $;
+}
+
+declare var jQuery: JQueryStatic; // inteface
+declare var $: JQueryStatic; // inteface
+</code></pre>
+<p>
+It is also a general way how to add types to foreign javascript code.
+Thanks to definition files: <code>*.d.ts</code>
+</p>
+</section>
+
+<section>
+<h2>Modules</h2>
+<p>TypeScript supports namespaces and modules throught ES2015 syntax and compiles them down to:</p>
+<ul>
+<li>CommonJS</li>
+<li>AMD</li>
+<li>SystemJS</li>
+<li>UMD</li>
+<li>ES6</li>
+</ul>
+</section>
+</section>
+
+<section data-background="#0074c1">
+<h2>Types</h2>
+<ul>
+<li>Any type</li>
+<li>Primitive types</li>
+<li>Object types</li>
+<li>Union types</li>
+<li>Intersection types</li>
+<li>Type parameters</li>
+<li>Specifying types (literals etc.)</li>
+</ul>
+</section>
+
+<section data-background="#0074c1">
+<h2>Any type</h2>
+<p>is a supertype of all types, and is assignable to and from all types.</p>
+<pre><code class="hljs typecript" data-trim contenteditable>
+var notSure: any = 4;
+notSure.ifItExists(); // okay, if ItExists might exist at runtime
+notSure.toFixed(); // okay, toFixed exists (but the compiler doesn't check)
+
+var prettySure: Object = 4;
+prettySure.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'Object'.
+</code></pre>
+
+<p>In general, in places where a type is not explicitly provided and
+TypeScript cannot infer one, the Any type is assumed.</p>
+</section>
+
+<section data-background="#0074c1">
+<section>
+<h2>Primitive types</h2>
+<ul>
+<li>Number</li>
+<li>Boolean</li>
+<li>String</li>
+<li><em>Symbol</em></li>
+<li>Void</li>
+<li>Null</li>
+<li>Undefined</li>
+<li>Enum</li>
+</ul>
+</section>
+
+<section>
+<h3>Numbers</h3>
+<pre><code class="hljs typescript" data-trim contenteditable>
+let f1: number;
+let f2: number = 1;
+let f3: number = 3.1415926; // float-point number
+let f4 = 2.71828183; // inferred float-point number
+let f5: number = 3.1415926; // float-point number
+let f6 = 2.71828183; // inferred float-point number
+const f7 = 0x6ff; // hexadecimal number
+const f8 = 0o700; // octal number
+const f9 = 0b10101; // binary number
+
+function subtract(i: number = 0, j: number = 0) {
+  return i - j;
+}
+</code></pre>
+</section>
+
+<section>
+<h3>Booleans</h3>
+<pre><code class="hljs typescript" data-trim contenteditable>
+let almostDone: boolean; // uninitialized
+let isDone: boolean = true; // explicitly initialized
+let wasDone = false; // inferred (always initialized)
+var done: boolean = false; // old style var
+
+function neg(n: boolean = false): boolean {
+  return !n;
+}
+</code></pre>
+</section>
+
+<section>
+<h3>Strings</h3>
+<pre><code class="hljs typescript" data-trim contenteditable>
+let title: string; // uninitialized
+const name: string = 'Edward'; // explicitly initialized
+const surname = 'Diego'; // inferred
+</code></pre>
+</section>
+
+<section>
+<h3>Void</h3>
+<p>
+The Void type, referenced by the void keyword, represents the absence
+of a value and is used as the return type of functions with no return value.
+</p>
+<pre><code class="hljs typescript" data-trim contenteditable>
+function x(): void {
+  return null;
+}
+</code></pre>
+<p>
+The only possible values for the Void type are null and undefined
+</p>
+</section>
+
+<section>
+<h3>Null</h3>
+<p>
+The Null type corresponds to the similarly named JavaScript primitive type and is the type of the null literal.
+</p>
+<p>
+The null literal references the one and only value of the Null type. It is not possible to directly reference the Null type itself.
+</p>
+<p>
+The Null type is a subtype of all types, except the Undefined type. This means that null is considered a valid value for all primitive types, object types, union types, intersection types, and type parameters, including even the Number and Boolean primitive types.
+</p>
+<pre><code class="hljs typescript" data-trim contenteditable>
+var n: number = null; // Primitives can be null
+var x = null; // Same as x: any = null
+var e: Null; // Error, can't reference Null type
+</code></pre>
+</section>
+
+<section>
+<h3>Undefined</h3>
+<p>
+The undefined literal denotes the value given to all uninitialized variables and is the one and only value of the Undefined type. It is not possible to directly reference the Undefined type itself.
+</p>
+<pre><code class="hljs typescript" data-trim contenteditable>
+var n: number; // Same as n: number = undefined
+var x = undefined; // Same as x: any = undefined
+var e: Undefined; // Error, can't reference Undefined type
+</code></pre>
+</section>
+
+<section>
+<h3>Enums</h3>
+<pre><code class="hljs typecript" data-trim contenteditable>
+enum Color {Red, Green, Blue};
+var c: Color = Color.Green;
+
+enum Color {Red = 1, Green, Blue};
+var c: Color = Color.Green;
+var colorName: string = Color[2]; // 'Green'
+</code></pre>
+</section></section>
+
+<section data-background="#0074c1">
+<section>
+<h3>Object types</h3>
+<ul>
+<li>Array type</li>
+<li>Tuple type</li>
+<li>Function type</li>
+<li>Construtor type</li>
+<li>Type parameters</li>
+<li>Overloading</li>
+</ul>
+</section>
+
+<section>
+<h3>Array types</h3>
+<p>The declaration of the 'Array' interface includes a property 'length' and a numeric index signature for the element type, along with other members</p>
+<pre><code class="hljs typescript" data-trim contenteditable>
+interface Array&lt;T&gt; {
+  length: number;
+  [x: number]: T;
+  // Other members
+}
+
+// example of literal
+var a: string[] = ["hello", "world"];
+let list1: number[] = [1, 2, 3];
+let list2: Array&lt;number&gt; = [1, 2, 3]; // generics style
+
+let list3 = ['hello', 'hi']; // inferred string[]
+list3.push(1); // this one won't compile!
+
+let list4: any = ['hello', 'or', 'hi'];
+list4.push(1); // this one gonna be ok
+</code></pre>
+</section>
+
+<section>
+<h3>Tuple types</h3>
+<p>
+represent JavaScript arrays with individually tracked element types.
+</p>
+<pre><code class="hljs typescript" data-trim contenteditable>
+var t: [number, string] = [3, "three"];
+var n = t[0]; // Type of n is number
+var s = t[1]; // Type of s is string
+</code></pre>
+</section>
+
+<section>
+<h3>Function types</h3>
+<pre><code class="hljs typescript" data-trim contenteditable>
+interface SomeFn {
+  (x: number): number;
+}
+
+let myFn = (x: number) =&gt; x * 2;
+let myFn2: SomeFn = myFn;
+</code></pre>
+</section>
+
+<section>
+<h3>Constructor types</h3>
+<pre><code class="hljs typecript" data-trim contenteditable>
+interface SomeCons {
+  new(x: number);
+}
+
+class Example {
+  private x: number;
+  constructor(x: number) {
+    this.x = x;
+  }
+}
+
+let ConcreteCons: SomeCons = Example;
+let y = new ConcreteCons(10);
+</code></pre>
+</section>
+
+<section>
+<h3>Type parameters</h3>
+<pre><code class="hljs typescript" data-trim contenteditable>
+&lt;T&gt;(x: T): T // simple
+&lt;T&gt;(x: T, y: T): T[]
+
+// A function taking two arguments of different types,
+// returning an object with properties 'x' and 'y' of those types:
+&lt;T, U&gt;(x: T, y: U): { x: T; y: U; }
+
+// A function taking an array of one type and a function argument,
+// returning an array of another type, where the function
+// argument takes a value of the first array element type
+// and returns a value of the second array element type:
+&lt;T, U&gt;(a: T[], f: (x: T) =&gt; U): U[]
+</code></pre>
+</section>
+
+<section>
+<h3>Overloading on string parameters</h3>
+<pre><code class="hljs typescript" data-trim contenteditable>
+interface Document {
+  createElement(tagName: "div"): HTMLDivElement;
+  createElement(tagName: "span"): HTMLSpanElement;
+  createElement(tagName: "canvas"): HTMLCanvasElement;
+  createElement(tagName: string): HTMLElement;
+}
+
+let span = document.createElement("span"); // return type is HTMLSpanElement
+let div = document.createElement("div"); // return type is HTMLDivElement
+let someElm = document.createElement("element"); // return type is ? :)
+</code></pre>
+</section>
+</section>
+
+<section data-background="#0074c1">
+<h3>Union types</h3>
+<pre><code class="hljs typescript" data-trim contenteditable>
+let x: string | number;
+x = "hello"; // Ok
+x = 42; // Ok
+x = test; // Error, boolean not assignable
+x = test ? 5 : "five"; // Ok
+x = test ? 0 : false; // Error, number | boolean not assignable
+</code></pre>
+</section>
+
+<section data-background="#0074c1">
+<h3>Intersection types</h3>
+<pre><code class="hljs typescript" data-trim contenteditable>
+interface A { a: number }; interface B { b: number }
+
+let ab: A & B = { a: 1, b: 1 };
+let a: A = ab;  // A & B assignable to A
+let b: B = ab;  // A & B assignable to B
+
+interface X { p: A }; interface Y { p: B }
+
+let xy: X & Y = { p: ab };  // X & Y has property p of type A & B
+type F1 = (a: string, b: string) => void;
+type F2 = (a: number, b: number) => void;
+let f: F1 & F2 = (a: string | number, b: string | number) => { };
+f("hello", "world"); // Ok
+f(1, 2); // Ok
+f(1, "test"); // Error
+</code></pre>
+</section>
+
+<section data-background="wut.jpg">
+</section>
+
+<section  data-background="#0074c1">
+<h2>Tooling</h2>
+<ul>
+<li>tsc - TypeScript Compiler (Yaay!)</li>
+<!-- <li><a href="https://github.com/Microsoft/TypeScript/wiki/Typings-for-npm-packages">Typings for npm</a></li> -->
+<li>tsd - TypeScript definiton manager</li>
+<li>typings - Yet another TypeScript definition manager</li>
+<li>tslint - linter and code quality tool</li>
+<li>tsserver - typescript compiler as service</li>
+<li>jspm - package manager for systemjs modules</li>
+<li>WebStorm has builtin plugin</li>
+<li>Atom has plugin(s)</li>
+<li>Sublime Text has plugin</li>
+<li>Visual Studio Code (VSCode)</li>
+<li>NPM packages like tsify, grunt-ts etc.</li>
+<li>More on <a href="https://github.com/Microsoft/TypeScript/wiki">Github Wiki</a></li>
+</ul>
+</section>
+
+<section>
+<section>
+<h2>Q &amp; A</h2>
+<p>
+	...like
+</p>
+</section>
+
+<section data-background="where-is-my-hoverboard.png">
+</section>
+
+<section>
+<h2>References</h2>
+<ul>
+<li>ES6 features: <a href="https://github.com/lukehoban/es6features">github.com/lukehoban/es6features</a></li>
+<li>TypeScript Homepage: <a href="http://typescriptlang.org">typescriptlang.org</a></li>
+<li>DefinitelyTyped: <a href="http://definitelytyped.org/tsd">definitelytyped.org/tsd</a></li>
+<li>TypeScript Deep Dive: <a href="https://basarat.gitbooks.io/typescript/">basarat.gitbooks.io/typescript</a></li>
+</ul>
+</section>
+</section>
+
+<script src="bower_components/reveal.js/lib/js/head.min.js"></script>
+<script src="bower_components/reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+	controls: true,
+	progress: true,
+	history: true,
+	center: true,
+	transition: 'slide', // none/fade/slide/convex/concave/zoom
+	// Optional reveal.js plugins
+	dependencies: [
+		{ src: 'bower_components/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+		{ src: 'bower_components/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+		{ src: 'bower_components/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+		{ src: 'bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+		{ src: 'bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true },
+		{ src: 'bower_components/reveal.js/plugin/notes/notes.js', async: true }
+	]
+});
+</script>
+
+</body>
+</html>

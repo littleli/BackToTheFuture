@@ -1,0 +1,27 @@
+{
+  "name": "TypeScript Presentation",
+  "authors": [
+    "Ales Najmann <najmann@avast.com>"
+  ],
+  "description": "Presenting TypeScript - The future of web applications",
+  "main": "index.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "typescript",
+    "es2015",
+    "types",
+    "javascript"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
